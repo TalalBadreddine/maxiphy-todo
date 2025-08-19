@@ -1,0 +1,52 @@
+{
+  "name": "maxiphy-monorepo",
+  "version": "1.0.0",
+  "description": "Maxiphy Todo Application - Full Stack Monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/frontend",
+    "packages/backend"
+  ],
+  "scripts": {
+    "dev": "npx concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:no-docker": "npx concurrently \"npm run dev:backend:no-docker\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd packages/frontend && npm run dev",
+    "dev:backend": "cd packages/backend && npm run dev",
+    "dev:backend:no-docker": "cd packages/backend && npm run dev:no-docker",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:frontend": "cd packages/frontend && npm run build",
+    "build:backend": "cd packages/backend && npm run build",
+    "start": "npm run start:backend",
+    "start:frontend": "cd packages/frontend && npm run start",
+    "start:backend": "cd packages/backend && npm run start:prod",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:frontend": "cd packages/frontend && npm run test",
+    "test:backend": "cd packages/backend && npm run test",
+    "test:e2e": "cd packages/backend && npm run test:e2e",
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "lint:backend": "cd packages/backend && npm run lint",
+    "lint:frontend": "cd packages/frontend && npm run lint",
+    "format": "cd packages/backend && npm run format",
+    "docker:build": "docker build -t maxiphy:latest .",
+    "docker:run": "docker run -p 3000:3000 maxiphy:latest",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f maxiphy-app",
+    "docker:rebuild": "docker-compose down && docker-compose build --no-cache && docker-compose up -d",
+    "prisma:generate": "cd packages/backend && npm run prisma:generate",
+    "prisma:migrate": "cd packages/backend && npm run prisma:migrate",
+    "prisma:deploy": "cd packages/backend && npm run prisma:deploy",
+    "prisma:studio": "cd packages/backend && npm run prisma:studio",
+    "prisma:seed": "cd packages/backend && npm run prisma:seed",
+    "db:reset": "cd packages/backend && npm run db:reset"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "author": "Maxiphy Team",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

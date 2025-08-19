@@ -1,0 +1,68 @@
+# Codecov configuration for Maxiphy project
+# https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 2%
+        base: auto
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+        base: auto
+
+  precision: 2
+  round: down
+  range: "70...100"
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: false
+  require_base: no
+  require_head: yes
+
+flags:
+  backend:
+    paths:
+      - backend/src/
+    carryforward: false
+  frontend:
+    paths:
+      - frontend/src/
+    carryforward: false
+
+github_checks:
+  annotations: true
+
+ignore:
+  - "backend/dist/"
+  - "backend/node_modules/"
+  - "backend/coverage/"
+  - "backend/test/"
+  - "backend/prisma/migrations/"
+  - "backend/src/**/*.d.ts"
+  - "backend/src/main.ts"
+  - "frontend/node_modules/"
+  - "frontend/coverage/"
+  - "frontend/.next/"
+  - "frontend/src/**/*.d.ts"
+  - "frontend/next.config.js"
+  - "frontend/tailwind.config.ts"
+  - "frontend/postcss.config.js"
+  - "frontend/jest.config.js"
+  - "**/__tests__/"
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "**/*.spec.ts"

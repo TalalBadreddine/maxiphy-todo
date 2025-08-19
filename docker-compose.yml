@@ -1,0 +1,42 @@
+services:
+  maxiphy-app:
+    build: 
+      context: ../../
+      dockerfile: Dockerfile
+    container_name: maxiphy-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:./dev.db
+      - JWT_SECRET=your-super-secret-jwt-key-here
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    volumes:
+      - app_data:/app/packages/backend/prisma
+      - logs_data:/app/packages/backend/logs
+    restart: unless-stopped
+    networks:
+      - maxiphy-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: maxiphy-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    networks:
+      - maxiphy-network
+
+volumes:
+  redis_data:
+  app_data:
+  logs_data:
+
+networks:
+  maxiphy-network:
+    driver: bridge

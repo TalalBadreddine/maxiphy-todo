@@ -1,0 +1,79 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String              @id @default(uuid())
+  email             String              @unique
+  name              String              @map("name")
+  password          String
+  emailVerified     Boolean             @default(false) @map("email_verified")
+  emailVerifiedAt   DateTime?           @map("email_verified_at")
+  isActive          Boolean             @default(true) @map("is_active")
+  lastLoginAt       DateTime?           @map("last_login_at")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+
+  tokens            UserToken[]
+  todos             Todo[]
+
+  @@map("users")
+}
+
+model UserToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String
+  type      UserTokenType
+  isUsed    Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, id, type])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_tokens")
+}
+
+model Todo {
+  id          String   @id @default(uuid())
+  title       String
+  isDeleted   Boolean  @default(false)
+  description String
+  priority    Priority @default(MEDIUM)
+  status      TodoStatus @default(TODO)
+  completed   Boolean  @default(false)
+  pinned      Boolean  @default(false)
+  dueDate     DateTime @map("due_date")
+  userId      String   @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, title])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("todos")
+}
+
+enum UserTokenType {
+  EMAIL_VERIFICATION
+}
+
+enum TodoStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}

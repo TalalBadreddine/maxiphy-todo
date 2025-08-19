@@ -1,0 +1,8 @@
+node_modules
+docs
+.next
+.env
+.DS_Store
+.claude
+wireframe
+template.txt
